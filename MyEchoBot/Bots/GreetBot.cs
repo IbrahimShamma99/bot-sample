@@ -20,35 +20,43 @@ namespace EchoBot.Bots
         private async Task GetName(ITurnContext turnContext, CancellationToken cancellationToken)
         {
             UserProfile userProfile = await _stateService.UserProfileAccessor.GetAsync(turnContext, () => new UserProfile());
+            ConversationData conversationAccount = await _stateService.ConversationDataAccessor.GetAsync(turnContext, () => new ConversationData());
             if (!string.IsNullOrEmpty(userProfile.Name))
             {
                 await turnContext.SendActivityAsync(MessageFactory.Text("HI {0}. How Can I help you today?", userProfile.Name), cancellationToken);
             }
             else
             {
-                if (conversationAccount.PromptedUserForName) {
+                if (conversationAccount.PromptedUserForName)
+                {
                     userProfile.Name = turnContext.Activity.Text?.Trim();
                     await turnContext.SendActivityAsync(MessageFactory.Text("Thanks {0}. How Can I help you today?", userProfile.Name), cancellationToken);
                     conversationAccount.PromptedUserForName = false;
                 }
-                else {
+                else
+                {
                     await turnContext.SendActivityAsync(MessageFactory.Text("What is your name?"), cancellationToken);
                     conversationAccount.PromptedUserForName = true;
-
                 }
+                await _stateService.UserProfileAccessor.SetAsync(turnContext, userProfile);
+                await _stateService.ConversationDataAccessor.SetAsync(turnContext, conversationAccount);
+
+                await _stateService.UserState.SaveChangesAsync(turnContext);
+                await _stateService.ConversationState.SaveChangesAsync(turnContext);
             }
         }
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
+            await GetName(turnContext, cancellationToken);
         }
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
-            var welcomeText = "Hello and welcome!";
             foreach (var member in membersAdded)
             {
                 Console.WriteLine("\n\n\n member id", member.Id);
                 if (member.Id != turnContext.Activity.Recipient.Id)
                 {
+                    await GetName(turnContext, cancellationToken);
                 }
             }
         }
