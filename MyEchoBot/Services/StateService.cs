@@ -15,9 +15,14 @@ namespace EchoBot.Services
         {
             get;
         }
+        public ConversationState ConversationState
+        {
+            get;
+        }
         #endregion
 
         public static string UserProfileId { get; } = $"{nameof(StateService)}.UserProfile";
+        public static string ConversationDataId { get; } = $"{nameof(StateService)}.UserProfile";
 
         public IStatePropertyAccessor<UserProfile> UserProfileAccessor { get; set; }
 
@@ -26,7 +31,8 @@ namespace EchoBot.Services
             UserState = userState ?? throw new ArgumentNullException(nameof(userState));
             IntializeAccessors();
         }
-        public void IntializeAccessors(){
+        public void IntializeAccessors()
+        {
             UserProfileAccessor = UserState.CreateProperty<UserProfile>(UserProfileId);
         }
     }
