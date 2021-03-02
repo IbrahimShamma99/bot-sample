@@ -1,9 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-//
-// Generated with EchoBot .NET Template version v4.11.1
-
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
@@ -30,12 +25,14 @@ namespace EchoBot
 
             // Create the Bot Framework Adapter with error handling enabled.
             services.AddSingleton<IBotFrameworkHttpAdapter, AdapterWithErrorHandler>();
-            
+
             ConfigureState(services);
             // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
             services.AddTransient<IBot, Bots.GreetBot>();
         }
-        public void ConfigureState(IServiceCollection services){
+        public void ConfigureState(IServiceCollection services)
+        {
+            services.AddSingleton<IStorage, MemoryStorage>();
             services.AddSingleton<UserState>();
             services.AddSingleton<ConversationState>();
             services.AddSingleton<StateService>();

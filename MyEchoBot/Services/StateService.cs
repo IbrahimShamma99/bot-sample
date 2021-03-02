@@ -19,16 +19,17 @@ namespace EchoBot.Services
         {
             get;
         }
-        #endregion
 
         public static string UserProfileId { get; } = $"{nameof(StateService)}.UserProfile";
         public static string ConversationDataId { get; } = $"{nameof(StateService)}.ConversationData";
 
         public IStatePropertyAccessor<UserProfile> UserProfileAccessor { get; set; }
         public IStatePropertyAccessor<ConversationData> ConversationDataAccessor { get; set; }
+        #endregion
 
         public StateService(UserState userState, ConversationState conversationState)
         {
+            ConversationState = conversationState ?? throw new ArgumentNullException(nameof(conversationState));
             UserState = userState ?? throw new ArgumentNullException(nameof(userState));
             IntializeAccessors();
         }

@@ -4,15 +4,13 @@
     "services": [
         {
             "type": "endpoint",
-            "appId": "",
-            "appPassword": "",
             "endpoint": "http://localhost:3978/api/messages",
-            "id": "3584ac00-7a7d-11eb-8281-bf74d3a94855",
-            "name": "http://localhost:3978/api/messages"
+            "name": "pluralbot",
+            "id": "71"
         }
     ],
     "padlock": "",
     "version": "2.0",
-    "overrides": null,
-    "path": "/Users/ibrahimabushammah/Repo/experimentals/bot-framework/pluralbot.bot"
+    "path": "/Users/ibrahimabushammah/Repo/experimentals/bot-framework/pluralbot.bot",
+    "overrides": null
 }

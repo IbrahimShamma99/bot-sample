@@ -53,7 +53,6 @@ namespace EchoBot.Bots
         {
             foreach (var member in membersAdded)
             {
-                Console.WriteLine("\n\n\n member id", member.Id);
                 if (member.Id != turnContext.Activity.Recipient.Id)
                 {
                     await GetName(turnContext, cancellationToken);
